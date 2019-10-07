@@ -1,9 +1,9 @@
 import React from 'react';
 import FavSearchItem from './FavSearchItem'
 
-const FavSearchList = ({searchList, onItemSelect}) => {
+const FavSearchList = ({searchList, onItemSelect, selectedIndex}) => {
   if (!searchList) {
-    return <div>No Favourite keywords</div>;
+    return <div className="col-md-2 list-group">No Favourite keywords</div>;
   }
   const searches = searchList.map((item, index) => {
     return (
@@ -11,14 +11,19 @@ const FavSearchList = ({searchList, onItemSelect}) => {
         key={index}
         item={item}
         onItemSelect={ onItemSelect }
+        index={index}
+        selectedIndex={selectedIndex}
       />
     );
   });
 
   return (
-    <ul className="col-md-2 list-group search-list">
-      { searches }
-    </ul>
+    <div className="col-md-2 ">
+      <div className="title">Favourites</div>
+      <ul className="list-group search-list">
+        { searches }
+      </ul>
+    </div>
   );
 }
 

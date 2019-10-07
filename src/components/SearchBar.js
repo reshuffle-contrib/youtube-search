@@ -7,9 +7,9 @@ class SearchBar extends Component {
     this.state = { term: '' };
   }
 
-  onInputChange(term) {
+  onInputChange(term, valueFromSearchbox) {
     this.setState({ term: term });
-    this.props.onChange(term);
+    this.props.onChange(term, valueFromSearchbox);
   }
 
   render() {
@@ -22,9 +22,10 @@ class SearchBar extends Component {
           Add to favourites
         </button>
         <input
+          id="search-box"
           value={this.state.term}
           onChange={(event) => {
-            this.onInputChange(event.target.value)
+            this.onInputChange(event.target.value, true)
           }}
           placeholder='Search Video'
         />

@@ -72,3 +72,14 @@ code {
   max-height: 400px;
   overflow-y: auto;
 }
+.title {
+  font-size: 1.5rem;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 0px 0px 10px;
+}
+
+.active {
+  background-color: red !important;
+}

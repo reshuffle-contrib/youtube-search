@@ -7,7 +7,7 @@ import VideoList from './components/VideoList';
 import VideoPlayer from './components/VideoPlayer';
 import NavBar from './components/NavBar';
 import FavSearchList from './components/FavSearchList';
-import { getFavSearch, setFavSearch} from '../backend/backend.js';
+import { getFavSearch, setFavSearch } from '../backend/backend.js';
 
 const YT_API = process.env.REACT_APP_YT_API_KEY;
 
@@ -22,22 +22,26 @@ class App extends Component {
       selectedVideo: null,
       searchList: [],
       searchKeyword: "",
+      selectedSearchIndex: -1
     };
 
     this.searchYoutube('');
   }
 
   componentDidMount() {
-    // getFavSearch().then(res => {
-    //   if (res) {
-    //     this.setState({searchList: res})
-    //   }
-    // });
+    getFavSearch().then(res => {
+      if (res) {
+        this.setState({searchList: res})
+      }
+    });
   }
 
-  videoSearch = _.debounce((term) => { this.searchYoutube(term) }, 300);
+  videoSearch = _.debounce((term,valueFromSearchbox) => { this.searchYoutube(term, valueFromSearchbox) }, 300);
 
-  searchYoutube(term) {
+  searchYoutube(term, valueFromSearchbox) {
+    if (valueFromSearchbox){
+      this.setState({selectedSearchIndex: -1})
+    }
     YTSearch({ key: YT_API, term: term}, (videos) => {
       this.setState({
         videos: videos,
@@ -49,7 +53,7 @@ class App extends Component {
 
   updateFavList() {
     const {searchList, searchKeyword} = this.state;
-    if (searchKeyword) {
+    if (searchKeyword && !( _.find(searchList, {'keyword': searchKeyword}))) {
       setFavSearch({"id": searchList.length, 'keyword': searchKeyword}).then(res => {
         if (res) {
           getFavSearch().then(res => {
@@ -60,6 +64,11 @@ class App extends Component {
     }
   }
 
+  selectSearch(selectedItem, index) {
+    this.setState({selectedSearchIndex: index})
+    this.videoSearch(selectedItem);
+  }
+
 
   render() {
     return (
@@ -68,10 +77,11 @@ class App extends Component {
         <div className="container">
           <SearchBar
             updateFavList={this.updateFavList}
-            onChange={(searchTerm) => {this.videoSearch(searchTerm)}} />
+            onChange={(searchTerm, valueFromSearchbox) => {this.videoSearch(searchTerm, valueFromSearchbox)}} />
           <FavSearchList 
             searchList={this.state.searchList}
-            onItemSelect={(selectedItem) => {this.videoSearch(selectedItem)}} 
+            onItemSelect={(selectedItem, index) => {this.selectSearch(selectedItem, index)}}
+            selectedIndex={this.state.selectedSearchIndex}
             />
           <VideoPlayer video={this.state.selectedVideo} />
           <VideoList
