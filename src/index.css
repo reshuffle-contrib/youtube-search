@@ -45,6 +45,7 @@ code {
 
 .search-bar input {
   width: 75%;
+  line-height: 1.8rem;
 }
 
 .video-item img {
@@ -65,8 +66,11 @@ code {
 .list-group-item:hover {
   background-color: #eee;
 }
-.mr-5 {
-  margin-right: 5px !important;
+.list-group-item:hover .del-btn{
+  display: block !important;
+}
+.mr-10 {
+  margin-right: 10px !important;
 }
 .search-list {
   max-height: 400px;
@@ -75,11 +79,17 @@ code {
 .title {
   font-size: 1.5rem;
   padding: 5px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
   margin: 0px 0px 10px;
 }
 
 .active {
   background-color: red !important;
+}
+
+.fav-icon{
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+.del-btn{
+  display: none !important
 }

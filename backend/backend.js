@@ -1,18 +1,14 @@
-import { get, update } from '@reshuffle/db';
+import { get, update, create } from '@reshuffle/db';
 
-/**
- *
- * @param {Object} item` 
- *
- * @return {Array} of object
- */
 
 /* @expose */
-export async function setFavSearch(item) {
-  return update ('favSearchList', savedSearchList  => {
-    const allSearch = {...savedSearchList};
-    allSearch[item.id] = item  
-    return allSearch
+export async function setFavSearch(item= {}) {
+  return getFavSearch().then(list => {
+    if (list) {
+      return update("favsli", favList => favList.concat(item));
+    } else {
+      return create("favsli", [item]).then(() => getFavSearch());
+    }
   });
 }
 
@@ -22,8 +18,19 @@ export async function setFavSearch(item) {
 
 /* @expose */
 export async function getFavSearch() {
-  const searchlist = await get('favSearchList');
-  let result = [];
-  for (let search in searchlist) result.push(searchlist[search]);
-  return result.reverse();
+  return get("favsli");
+}
+
+/**
+ *
+ * @param {Object} item` 
+ *
+ * @return {Array} of object
+ */
+
+/* @expose */
+export async function delFavSearch(item) {
+  return update("favsli", (favList = []) =>
+    favList.filter(todo => todo.keyword !== item)
+  );
 }
