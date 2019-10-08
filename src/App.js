@@ -7,7 +7,7 @@ import VideoList from './components/VideoList';
 import VideoPlayer from './components/VideoPlayer';
 import NavBar from './components/NavBar';
 import FavSearchList from './components/FavSearchList';
-import { getFavSearch, setFavSearch } from '../backend/backend.js';
+import { getFavSearch, setFavSearch, delFavSearch } from '../backend/backend.js';
 
 const YT_API = process.env.REACT_APP_YT_API_KEY;
 
@@ -22,7 +22,8 @@ class App extends Component {
       selectedVideo: null,
       searchList: [],
       searchKeyword: "",
-      selectedSearchIndex: -1
+      selectedSearchIndex: -1,
+      favStatus: false
     };
 
     this.searchYoutube('');
@@ -36,17 +37,13 @@ class App extends Component {
     });
   }
 
-  videoSearch = _.debounce((term,valueFromSearchbox) => { this.searchYoutube(term, valueFromSearchbox) }, 300);
+  videoSearch = _.debounce((term) => { this.searchYoutube(term) }, 300);
 
-  searchYoutube(term, valueFromSearchbox) {
-    if (valueFromSearchbox){
-      this.setState({selectedSearchIndex: -1})
-    }
+  searchYoutube(term) {
     YTSearch({ key: YT_API, term: term}, (videos) => {
       this.setState({
         videos: videos,
         selectedVideo: videos[0],
-        searchKeyword: term
       });
     });
   }
@@ -54,7 +51,7 @@ class App extends Component {
   updateFavList() {
     const {searchList, searchKeyword} = this.state;
     if (searchKeyword && !( _.find(searchList, {'keyword': searchKeyword}))) {
-      setFavSearch({"id": searchList.length, 'keyword': searchKeyword}).then(res => {
+      setFavSearch({'keyword': searchKeyword}).then(res => {
         if (res) {
           getFavSearch().then(res => {
             if (res) { this.setState({searchList: res}); }
@@ -64,11 +61,25 @@ class App extends Component {
     }
   }
 
+  deleteFromFavList(item) {
+    delFavSearch(item.keyword).then(res => {
+      if (res) {
+        getFavSearch().then(res => {
+          if (res) { this.setState({searchList: res, selectedSearchIndex: -1, searchKeyword: "", favStatus: false}); }
+        });
+      }
+    });
+  }
+
   selectSearch(selectedItem, index) {
-    this.setState({selectedSearchIndex: index})
+    this.setState({searchKeyword: selectedItem, selectedSearchIndex: index, favStatus: true})
     this.videoSearch(selectedItem);
   }
 
+  onInputChange(searchTerm) {
+    this.setState({searchKeyword: searchTerm, selectedSearchIndex: -1, favStatus: false});
+    this.videoSearch(searchTerm);
+  }
 
   render() {
     return (
@@ -76,12 +87,15 @@ class App extends Component {
         <NavBar siteTitle='React Youtube App' />
         <div className="container">
           <SearchBar
+            favStatus={this.state.favStatus}
+            term={this.state.searchKeyword}
             updateFavList={this.updateFavList}
-            onChange={(searchTerm, valueFromSearchbox) => {this.videoSearch(searchTerm, valueFromSearchbox)}} />
+            onChange={(searchTerm) => {this.onInputChange(searchTerm)}} />
           <FavSearchList 
             searchList={this.state.searchList}
             onItemSelect={(selectedItem, index) => {this.selectSearch(selectedItem, index)}}
             selectedIndex={this.state.selectedSearchIndex}
+            deleteItem={(selectedItem) => {this.deleteFromFavList(selectedItem)}}
             />
           <VideoPlayer video={this.state.selectedVideo} />
           <VideoList

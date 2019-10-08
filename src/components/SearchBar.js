@@ -3,29 +3,20 @@ import React, { Component } from 'react';
 class SearchBar extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { term: '' };
-  }
-
-  onInputChange(term, valueFromSearchbox) {
-    this.setState({ term: term });
-    this.props.onChange(term, valueFromSearchbox);
   }
 
   render() {
+    const{ favStatus, term} = this.props;
     return (
       <div className="search-bar">
-        <button 
-          className="btn btn-sm mr-5"
-          onClick={() => {this.props.updateFavList()}}>
-          <i className="fa fa-star mr-5" aria-hidden="true"></i>
-          Add to favourites
-        </button>
+        <span className="fav-icon">
+          <i onClick={() => { this.props.updateFavList() }} className={favStatus ? "fa fa-star mr-10" : "fa fa-star-o mr-10"} aria-hidden="true"></i>
+          </span>
         <input
           id="search-box"
-          value={this.state.term}
+          value={term}
           onChange={(event) => {
-            this.onInputChange(event.target.value, true)
+            this.props.onChange(event.target.value)
           }}
           placeholder='Search Video'
         />

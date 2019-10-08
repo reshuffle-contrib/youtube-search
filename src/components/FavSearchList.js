@@ -1,7 +1,7 @@
 import React from 'react';
 import FavSearchItem from './FavSearchItem'
 
-const FavSearchList = ({searchList, onItemSelect, selectedIndex}) => {
+const FavSearchList = ({searchList, onItemSelect, selectedIndex, deleteItem}) => {
   if (!searchList) {
     return <div className="col-md-2 list-group">No Favourite keywords</div>;
   }
@@ -12,14 +12,15 @@ const FavSearchList = ({searchList, onItemSelect, selectedIndex}) => {
         item={item}
         onItemSelect={ onItemSelect }
         index={index}
-        selectedIndex={selectedIndex}
+        selectedIndex={ selectedIndex }
+        deleteItem={ deleteItem }
       />
     );
   });
 
   return (
     <div className="col-md-2 ">
-      <div className="title">Favourites</div>
+      {searchList.length > 0 && <div className="title">Favourites</div>}
       <ul className="list-group search-list">
         { searches }
       </ul>
