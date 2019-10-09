@@ -58,6 +58,14 @@ class App extends Component {
           });
         }
       });
+    } else {
+      delFavSearch(searchKeyword).then(res => {
+        if (res) {
+          getFavSearch().then(res => {
+            if (res) { this.setState({searchList: res, selectedSearchIndex: -1, searchKeyword: "", favStatus: false}); }
+          });
+        }
+      });
     }
   }
 
@@ -72,10 +80,10 @@ class App extends Component {
   }
 
   selectSearch(selectedItem, index) {
-    this.setState({searchKeyword: selectedItem, selectedSearchIndex: index, favStatus: true})
-    this.videoSearch(selectedItem);
-  }
-
+      this.setState({searchKeyword: selectedItem, selectedSearchIndex: index, favStatus: true})
+      this.videoSearch(selectedItem);
+    }
+    
   onInputChange(searchTerm) {
     this.setState({searchKeyword: searchTerm, selectedSearchIndex: -1, favStatus: false});
     this.videoSearch(searchTerm);
