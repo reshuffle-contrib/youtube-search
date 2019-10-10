@@ -1,8 +1,14 @@
 import React from 'react';
 
-const VideoPlayer = ({ video }) => {
+const VideoPlayer = ({ video, apiMissingErr }) => {
   if (!video) {
-    return <div>Loading video player...</div>;
+    return (
+    <div>
+      {!video && <div className="col-md-7">Loading video player...</div>}
+      {apiMissingErr && <div className="col-md-7" style={{color: 'red'}}>Enter a valid Youtube API key in .env</div>}
+
+    </div>
+      );
   }
   const videoId = video.id.videoId;
   const url = `https://youtube.com/embed/${videoId}`;

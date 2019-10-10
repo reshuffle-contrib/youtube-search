@@ -23,13 +23,17 @@ class App extends Component {
       searchList: [],
       searchKeyword: "",
       selectedSearchIndex: -1,
-      favStatus: false
+      favStatus: false,
+      apiMissingErr: false
     };
 
     this.searchYoutube('');
   }
 
   componentDidMount() {
+    if (!YT_API){
+      this.setState({apiMissingErr: true})
+    }
     getFavSearch().then(res => {
       if (res) {
         this.setState({searchList: res})
@@ -40,12 +44,14 @@ class App extends Component {
   videoSearch = _.debounce((term) => { this.searchYoutube(term) }, 300);
 
   searchYoutube(term) {
-    YTSearch({ key: YT_API, term: term}, (videos) => {
-      this.setState({
-        videos: videos,
-        selectedVideo: videos[0],
+    if (YT_API){
+      YTSearch({ key: YT_API, term: term}, (videos) => {
+        this.setState({
+          videos: videos,
+          selectedVideo: videos[0],
+        });
       });
-    });
+    }
   }
 
   updateFavList() {
@@ -105,7 +111,7 @@ class App extends Component {
             selectedIndex={this.state.selectedSearchIndex}
             deleteItem={(selectedItem) => {this.deleteFromFavList(selectedItem)}}
             />
-          <VideoPlayer video={this.state.selectedVideo} />
+          <VideoPlayer apiMissingErr={this.state.apiMissingErr} video={this.state.selectedVideo} />
           <VideoList
             onVideoSelect={(selectedVideo) => {this.setState({selectedVideo})}}
             videos={this.state.videos}
