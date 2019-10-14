@@ -51,6 +51,7 @@ code {
 
 .list-group-item {
   cursor: pointer;
+  padding: 0.5rem 0 0.5rem 0.5rem;
 }
 
 .list-group-item:hover {

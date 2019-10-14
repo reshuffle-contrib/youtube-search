@@ -162,7 +162,7 @@ class App extends Component {
                 video={this.state.selectedVideo}
               />
             </Col>
-            <Col className='col-3'>
+            <Col className='col-4'>
               <VideoList
                 onVideoSelect={selectedVideo => {
                   this.setState({ selectedVideo });

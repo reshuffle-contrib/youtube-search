@@ -5,10 +5,15 @@ const VideoPlayer = ({ video, apiMissingErr }) => {
     return (
       <div>
         {!apiMissingErr && !video && (
-          <div className=''>Loading video player...</div>
+          <div className=' d-flex justify-content-center align-items-center'>
+            Loading video player...
+          </div>
         )}
         {apiMissingErr && (
-          <div className='' style={{ color: 'red' }}>
+          <div
+            className=' d-flex justify-content-center align-items-center'
+            style={{ color: 'red' }}
+          >
             Enter a valid Youtube API key in .env
           </div>
         )}
