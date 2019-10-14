@@ -130,7 +130,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <ApiKeyNav />
+        {this.state.apiMissingErr && <ApiKeyNav />}
         <NavBar siteTitle='React Youtube App' />
         <Container fluid>
           <Row noGutters='true'>
