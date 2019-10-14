@@ -1,37 +1,26 @@
 body {
   margin: 0;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    "Roboto",
-    "Oxygen",
-    "Ubuntu",
-    "Cantarell",
-    "Fira Sans",
-    "Droid Sans",
-    "Helvetica Neue",
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family:
-    source-code-pro,
-    Menlo,
-    Monaco,
-    Consolas,
-    "Courier New",
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-.nav-bar{
+.nav-bar {
   border: 1px solid red;
   text-align: center;
   background: red;
 }
 
+.nav-warning {
+  cursor: pointer;
+}
 #site-title {
   color: white;
   font-size: 20px;
@@ -41,6 +30,7 @@ code {
 .search-bar {
   margin: 30px;
   text-align: center;
+  width: 100%;
 }
 
 .search-bar input {
@@ -66,7 +56,7 @@ code {
 .list-group-item:hover {
   background-color: #eee;
 }
-.list-group-item:hover .del-btn{
+.list-group-item:hover .del-btn {
   display: block !important;
 }
 .mr-10 {
@@ -86,10 +76,10 @@ code {
   background-color: red !important;
 }
 
-.fav-icon{
+.fav-icon {
   font-size: 1.7rem;
   cursor: pointer;
 }
-.del-btn{
-  display: none !important
+.del-btn {
+  display: none !important;
 }

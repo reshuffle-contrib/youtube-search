@@ -8,7 +8,7 @@ const FavSearchList = ({
   deleteItem,
 }) => {
   if (!searchList) {
-    return <div className='col-md-2 list-group'>No Favorite keywords</div>;
+    return <div className='list-group'>No Favorite keywords</div>;
   }
   const searches = searchList.map((item, index) => {
     return (
@@ -24,7 +24,7 @@ const FavSearchList = ({
   });
 
   return (
-    <div className='col-md-2 '>
+    <div className=''>
       {searchList.length > 0 && <div className='title'>Bookmarks</div>}
       <ul className='list-group search-list'>{searches}</ul>
     </div>
